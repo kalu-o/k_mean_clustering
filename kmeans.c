@@ -150,34 +150,3 @@ int write_cluster_name(char *p_f_name, const input_list_t *p_l_input)
     close(p_file);
     return 0;
 }
-
-/*
- * Main.
- */
-int main(int argc, char *argv[])
-{
-    int i;
-    float prev_total_error = MAX_ERROR;
-    /*
-    * Initialise cluster centroid.
-    */
-    cluster_t a_clusters[NUM_CLUSTER] =
-    {
-        {{-0.357, -0.253}, "Adam", 0, 0},
-        {{-0.055, 4.392}, "Bob", 0, 0},
-        {{2.674, -0.001}, "Charley", 0, 0},
-        {{1.044, -1.251}, "David", 0, 0},
-        {{-1.495, -0.090}, "Edward", 0, 0}
-    };
-    input_list_t l_input = {NULL, NULL, 0};
-    read_file(argv[1], &l_input);
-    kmeans_algorithm(&l_input, a_clusters);
-    while ( (prev_total_error - l_input.total_error)  > EPSILON)
-    {
-        prev_total_error = l_input.total_error;
-        kmeans_algorithm(&l_input, a_clusters);
-    }
-    write_cluster_name(argv[2], &l_input);
-    clear_input_list(&l_input);
-    return 0;
-}
